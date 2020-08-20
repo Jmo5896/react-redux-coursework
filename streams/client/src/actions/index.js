@@ -22,10 +22,12 @@ export const signOut = () => {
     };
 };
 
-export const createStream = formValues => async dispatch => {
-    const response = await streams.post('/streams', formValues);
+export const createStream = formValues => async (dispatch, getState) => {
+    const { userId } = getState().auth; //use redux dev tools to see structure of state
+    const response = await streams.post('/streams', { ...formValues, userId });
 
     dispatch({ type: CREATE_STREAM, payload: response.data });
+    // do programmatic navigation to get ther user back to root
 };
 
 export const fetchStreams = () => async dispatch => {
